@@ -24,29 +24,38 @@
     --shadow-gold: 0 8px 30px rgba(101, 19, 38, 0.6), 0 0 16px rgba(231, 198, 106, 0.35);
   }
 
+  html {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
-    background:
-      radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(15, 2, 5, 0.65) 100%),
-      radial-gradient(circle at 15% 10%, rgba(120, 25, 45, 0.45) 0%, transparent 38%),
-      linear-gradient(135deg, #651326 0%, #4a0b18 30%, #430914 50%, #350711 70%, #21040b 100%) !important;
-    background-attachment: fixed !important;
+    background-color: #21040b !important;
+    background-image: none !important;
     color: #f7ebd9 !important;
+    overflow-x: hidden;
   }
 
   .wedding-site {
-    background:
-      radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(15, 2, 5, 0.65) 100%),
-      radial-gradient(circle at 15% 10%, rgba(120, 25, 45, 0.45) 0%, transparent 38%),
-      linear-gradient(135deg, #651326 0%, #4a0b18 30%, #430914 50%, #350711 70%, #21040b 100%) !important;
-    background-attachment: fixed !important;
+    background: transparent !important;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
   }
 
   .site-background {
     opacity: 0.1 !important;
     filter: saturate(0.25) brightness(0.25) contrast(1.15) !important;
     mix-blend-mode: luminosity !important;
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    transform: translateZ(0) !important;
+    will-change: transform;
+    z-index: -3 !important;
   }
 
+  /* GPU hardware-composited fixed background (zero repainting during scroll) */
   .background-veil {
     background:
       radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(15, 2, 5, 0.65) 100%),
@@ -54,36 +63,101 @@
       linear-gradient(135deg, #651326 0%, #4a0b18 30%, #430914 50%, #350711 70%, #21040b 100%) !important;
     position: fixed !important;
     inset: 0 !important;
+    pointer-events: none !important;
+    transform: translateZ(0) !important;
+    will-change: transform;
+    z-index: -2 !important;
+  }
+
+  /* GPU accelerated ambient particle animations */
+  .particles, .falling-petals {
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    contain: strict !important;
+    transform: translateZ(0) !important;
+  }
+
+  .particles i, .falling-petals i {
+    will-change: transform, opacity !important;
+    backface-visibility: hidden !important;
   }
 
   .cover-screen, .invite-section {
-    background: radial-gradient(ellipse at 48% 36%, rgba(243, 217, 138, 0.05) 0%, rgba(214, 168, 79, 0.02) 40%, transparent 72%) !important;
+    background: transparent !important;
   }
 
+  /* Hardware compositing for frame cards to prevent shadow rasterization lag */
   .cover-card, .arch-card {
     background: linear-gradient(135deg, #f3d98a 0%, #e7c66a 25%, #d6a84f 55%, #a67c2e 80%, #e7c66a 100%) !important;
     padding: 1.5px !important;
-    filter:
-      /* 1. Close warm champagne/gold frame edge glow - biased to upper-left */
-      drop-shadow(-2px -3px 5px rgba(243, 217, 138, 0.6))
-      drop-shadow(1px 2px 5px rgba(214, 168, 79, 0.4))
-      /* 2. Medium soft champagne radiance radiating outward */
-      drop-shadow(-6px -8px 18px rgba(231, 198, 106, 0.45))
-      drop-shadow(3px 5px 20px rgba(214, 168, 79, 0.3))
-      /* 3. Broad soft ambient golden haze outside the frame */
-      drop-shadow(-12px -16px 42px rgba(243, 217, 138, 0.22))
-      drop-shadow(6px 12px 48px rgba(214, 168, 79, 0.15))
-      /* 4. Deep grounding shadow for contrast and royal depth */
-      drop-shadow(0 25px 50px rgba(10, 1, 3, 0.85))
-      drop-shadow(0 0 60px rgba(101, 19, 38, 0.35)) !important;
+    filter: drop-shadow(0 16px 36px rgba(10, 1, 3, 0.75)) drop-shadow(0 0 20px rgba(231, 198, 106, 0.2)) !important;
+    transform: translateZ(0) !important;
+    will-change: transform, opacity !important;
+    contain: layout style !important;
   }
 
+  /* High performance inner card */
   .cover-inner, .arch-inner {
     background: linear-gradient(165deg, rgba(74, 11, 24, 0.98) 0%, rgba(53, 7, 17, 0.98) 45%, rgba(33, 4, 11, 0.99) 100%) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 
   .cover-inner:after, .arch-inner:after {
     border-color: rgba(231, 198, 106, 0.48) !important;
+  }
+
+  /* Symmetrical, perfectly visible 4-corner mirrored floral frame */
+  .floral {
+    position: absolute !important;
+    z-index: 5 !important;
+    pointer-events: none !important;
+    display: block !important;
+    width: clamp(100px, 32%, 140px) !important;
+    height: auto !important;
+    opacity: 0.96 !important;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45)) !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+  }
+
+  /* 1. Top-Left Corner (Brought slightly forward in the frame) */
+  .floral-tl {
+    top: 6% !important;
+    left: -1% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: clamp(105px, 34%, 148px) !important;
+    transform: translateZ(0) !important;
+  }
+
+  /* 2. Top-Right Corner (Exact horizontal reflection brought slightly forward) */
+  .floral-tr {
+    top: 6% !important;
+    right: -1% !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: clamp(105px, 34%, 148px) !important;
+    transform: scaleX(-1) translateZ(0) !important;
+  }
+
+  /* 3. Bottom-Left Corner (Exact vertical reflection of Top-Left) */
+  .floral-bl {
+    bottom: -4% !important;
+    left: -3% !important;
+    top: auto !important;
+    right: auto !important;
+    transform: rotate(180deg) scaleX(-1) translateZ(0) !important;
+  }
+
+  /* 4. Bottom-Right Corner (Exact horizontal reflection of Bottom-Left & vertical reflection of Top-Right) */
+  .floral-br {
+    bottom: -4% !important;
+    right: -3% !important;
+    top: auto !important;
+    left: auto !important;
+    transform: rotate(180deg) translateZ(0) !important;
   }
 
   .arabic {
@@ -444,15 +518,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // IntersectionObserver for cards on scroll
+  // High performance IntersectionObserver for silky smooth scroll reveals
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
+    }, { threshold: 0.08, rootMargin: '60px 0px' });
     reveals.forEach(function(card) { observer.observe(card); });
   }
 
