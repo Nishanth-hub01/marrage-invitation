@@ -108,56 +108,76 @@
     border-color: rgba(231, 198, 106, 0.48) !important;
   }
 
-  /* Symmetrical, perfectly visible 4-corner mirrored floral frame */
+  /* Symmetrical 4-corner floral frame matching reference design */
   .floral {
     position: absolute !important;
-    z-index: 5 !important;
+    z-index: 6 !important;
     pointer-events: none !important;
     display: block !important;
-    width: clamp(100px, 32%, 140px) !important;
     height: auto !important;
-    opacity: 0.96 !important;
-    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45)) !important;
+    opacity: 0.98 !important;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5)) !important;
     will-change: transform !important;
     backface-visibility: hidden !important;
   }
 
-  /* 1. Top-Left Corner (Brought slightly forward in the frame) */
+  /* 1. Top-Left Corner (Resting lush on stepped arch shoulder) */
   .floral-tl {
-    top: 6% !important;
-    left: -1% !important;
+    top: 9% !important;
+    left: -2% !important;
     right: auto !important;
     bottom: auto !important;
-    width: clamp(105px, 34%, 148px) !important;
+    width: clamp(110px, 34%, 150px) !important;
     transform: translateZ(0) !important;
   }
 
-  /* 2. Top-Right Corner (Exact horizontal reflection brought slightly forward) */
+  /* 2. Top-Right Corner (Exact horizontal reflection on right arch shoulder) */
   .floral-tr {
-    top: 6% !important;
-    right: -1% !important;
+    top: 9% !important;
+    right: -2% !important;
     left: auto !important;
     bottom: auto !important;
-    width: clamp(105px, 34%, 148px) !important;
+    width: clamp(110px, 34%, 150px) !important;
     transform: scaleX(-1) translateZ(0) !important;
   }
 
-  /* 3. Bottom-Left Corner (Exact vertical reflection of Top-Left) */
+  /* 3. Bottom-Left Corner (Slender floral spray rising up along left border) */
   .floral-bl {
-    bottom: -4% !important;
-    left: -3% !important;
+    bottom: -2% !important;
+    left: -1% !important;
     top: auto !important;
     right: auto !important;
+    width: clamp(80px, 23%, 105px) !important;
     transform: rotate(180deg) scaleX(-1) translateZ(0) !important;
   }
 
-  /* 4. Bottom-Right Corner (Exact horizontal reflection of Bottom-Left & vertical reflection of Top-Right) */
+  /* 4. Bottom-Right Corner (Slender floral spray rising up along right border) */
   .floral-br {
-    bottom: -4% !important;
-    right: -3% !important;
+    bottom: -2% !important;
+    right: -1% !important;
     top: auto !important;
     left: auto !important;
+    width: clamp(80px, 23%, 105px) !important;
     transform: rotate(180deg) translateZ(0) !important;
+  }
+
+  .cover-lantern {
+    color: #e7c66a !important;
+    font-size: 1.25rem !important;
+    position: absolute !important;
+    top: 22% !important;
+    z-index: 5 !important;
+    opacity: 0.9 !important;
+    filter: drop-shadow(0 0 6px rgba(231, 198, 106, 0.45)) !important;
+    animation: none !important;
+  }
+
+  .cover-lantern-left {
+    left: 12px !important;
+  }
+
+  .cover-lantern-right {
+    right: 12px !important;
   }
 
   .arabic {
